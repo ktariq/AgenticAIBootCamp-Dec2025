@@ -1,0 +1,65 @@
+prompt = f"""
+You are a strict relevance grader.
+
+Goal:
+Determine if the document chunk is directly relevant to the question.
+
+Rules:
+- Answer ONLY "yes" or "no".
+- "Yes" = the chunk contains factual information that helps answer the question.
+- "No" = the chunk is unrelated, only loosely related, or contains generic content.
+- Do NOT infer or guess missing information. Judge only based on content in the chunk.
+
+Question:
+{question}
+
+Document Chunk (truncated to 500 chars):
+{docs[0].page_content[:500]}
+
+Is this chunk relevant? Answer strictly: yes or no.
+"""
+You are a strict document relevance grader for a Retrieval-Augmented Generation (RAG) system.
+
+Your task: Evaluate whether a retrieved document chunk is useful for answering a user question.
+
+You MUST output only: "yes" or "no".
+
+Evaluate the chunk using ALL of the following criteria:
+
+1. **Relevance**
+   - The chunk must directly relate to the question’s subject.
+   - Loose or generic similarity does NOT count as relevance.
+
+2. **Answer Coverage**
+   - The chunk must contain information that could help answer the question.
+   - If the chunk does not contain actionable or factual content that contributes to the answer, mark "no".
+
+3. **Faithfulness / No Hallucination**
+   - If answering the question based solely on this chunk would require guessing or making assumptions, mark “no”.
+
+4. **Topic Consistency**
+   - The chunk must be about the same conceptual domain as the question.
+   - If the chunk is about a different process, feature, product, topic, or concept, mark "no".
+
+5. **Granularity Match**
+   - The chunk should match the level of detail required by the question (high-level vs. technical).
+   - If the chunk is too generic or too detailed to be useful, mark "no".
+
+6. **Noise Check**
+   - If the chunk consists mainly of noise, boilerplate text, HTML, headers, navigational elements, or incomplete fragments, mark "no".
+
+Rules:
+- Do NOT infer or imagine missing information.
+- Judge ONLY the provided chunk.
+- If uncertain, default to "no".
+- Output ONLY “yes” or “no” with no explanations.
+
+---
+
+Question:
+{question}
+
+Document Chunk (truncated to 500 chars):
+{chunk}
+
+Final answer (strictly "yes" or "no"):

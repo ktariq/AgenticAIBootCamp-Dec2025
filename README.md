@@ -1,1 +1,1 @@
-# AgenticAIBootCamp-Dec2025
+# AgenticAIBootCamp - Dec2025
